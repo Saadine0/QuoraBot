@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import OpenAI from 'openai';
 
+
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,7 +19,7 @@ app.set('view engine', 'ejs');
 
 // Serve the index.ejs file
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { title: '', messagegpt: '' });
 });
 
 const openai = new OpenAI({
@@ -62,7 +64,7 @@ app.post('/send-url', async (req, res) => {
 
         // Scrape content and assign to titles variable
         titles = await page.evaluate(() => {
-            const titleElement = document.querySelector("#mainContent  div.q-box.qu-borderAll.qu-borderRadius--small.qu-borderColor--raised.qu-boxShadow--small.qu-bg--raised");
+            const titleElement = document.querySelector("#mainContent div.q-box.qu-borderAll.qu-borderRadius--small.qu-borderColor--raised.qu-boxShadow--small.qu-bg--raised");
             return titleElement ? titleElement.textContent.trim() : 'Element not found';
         });
 
@@ -70,10 +72,9 @@ app.post('/send-url', async (req, res) => {
 
         await browser.close();
 
-        res.send(titles);
-
         // Call runPrompt function after titles is assigned
-        runPrompt();
+        const messagegpt = await runPrompt();
+        res.render('index', { title: titles, messagegpt });
 
     } catch (error) {
         console.error('Error:', error);
@@ -103,8 +104,9 @@ const runPrompt = async () => {
             presence_penalty: 0
         });
 
-        console.log(response.choices[0].message.content);
+        return response.choices[0].message.content;
     } catch (error) {
         console.error('Error:', error);
+        return 'Error occurred';
     }
 }

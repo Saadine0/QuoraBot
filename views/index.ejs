@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>url scrap</title>
 </head>
 <body>
     <form action="send-url" method="POST">
-        <input type="text" placeholder= "TYPE URL ..." name="myurl">
+        <input type="text" placeholder="TYPE URL ..." name="myurl">
         <input type="submit" value="send">
+        <h1>Title: <%= title %></h1>
+        <h1>Message from GPT: <%= messagegpt %></h1>
     </form>
-    
 </body>
 </html>
