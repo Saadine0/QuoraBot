@@ -6,6 +6,8 @@ import OpenAI from 'openai';
 
 
 
+
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -82,6 +84,20 @@ app.post('/send-url', async (req, res) => {
     }
 });
 
+// Handle response modification
+app.post('/modify-response', async (req, res) => {
+    const { modifiedResponse } = req.body;
+
+    try {
+        // Call runPrompt function with the modified response
+        const messagegpt = await runPrompt(modifiedResponse);
+        res.render('index', { title: titles, messagegpt });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
@@ -91,12 +107,12 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const runPrompt = async () => {
+const runPrompt = async (modifiedResponse) => {
     try {
         const prompt = "Tell me a joke about a developer not knowing how to use git";
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ "role": "user", "content": titles }],
+            messages: [{ "role": "user", "content": modifiedResponse || titles }],
             max_tokens: 512,
             top_p: 1,
             temperature: 0.5,
