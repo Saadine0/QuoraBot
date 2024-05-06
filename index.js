@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
     res.render('index', { title: '', messagegpt: '' });
 });
 
+app.use(express.static('node_modules/@ckeditor/ckeditor5-build-classic/build'));
+
+
 const openai = new OpenAI({
     apiKey: "sk-proj-NU9i3yAi1UyEgkwFH00FT3BlbkFJgMF4V2jwvpiMwURNC6Hy"
 });
@@ -109,7 +112,6 @@ function delay(ms) {
 
 const runPrompt = async (modifiedResponse) => {
     try {
-        const prompt = "Tell me a joke about a developer not knowing how to use git";
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [{ "role": "user", "content": modifiedResponse || titles }],

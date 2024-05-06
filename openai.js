@@ -1,23 +1,43 @@
-import OpenAI from 'openai';
+import puppeteer from 'puppeteer';
 
-const openai = new OpenAI({
-     apiKey: "sk-proj-NU9i3yAi1UyEgkwFH00FT3BlbkFJgMF4V2jwvpiMwURNC6Hy"// This is also the default, can be omitted
-});
+(async () => {
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
 
-const runPrompt = async () => {
-    const prompt = "Tell me a joke about a developer not knowing how to use git";
-    const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{"role": "user", "content": "give me a joke about a developer that doesnt know about git"}],
-        max_tokens: 512,
-        top_p: 1,
-        temperature: 0.5,
-        frequency_penalty: 0,
-        presence_penalty: 0
-    });
-
-    console.log(response.choices[0].message.content);
-}
-
-runPrompt();
+    // Set a longer navigation timeout (e.g., 60 seconds)
   
+
+    // Navigate to Quora Arabic login page
+    await page.goto('https://quora.com/');
+
+    // Wait for the email input field to appear on the page
+    await page.waitForSelector('#email', { visible: true });
+
+    // Typing email and password
+    await page.type('#email', 'Neypor7obi@gmail.com');
+    await page.type('#password', 'Saad2002');
+
+    // Wait for 5 seconds before clicking the login button
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    // Clicking on the login button
+    await page.click('button.q-click-wrapper.qu-active--textDecoration--none.qu-focus--textDecoration--none.qu-borderRadius--pill.qu-alignItems--center.qu-justifyContent--center.qu-whiteSpace--nowrap.qu-userSelect--none.qu-display--inline-flex.qu-bg--blue.qu-tapHighlight--white.qu-textAlign--center.qu-cursor--pointer.qu-hover--textDecoration--none.ClickWrapper___StyledClickWrapperBox-zoqi4f-0.iyYUZT.base___StyledClickWrapper-lx6eke-1.hIqLpn[tabindex="4"][type="button"]');
+
+    // Wait for navigation to complete after clicking login button
+    await page.waitForNavigation();
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    await page.goto('https://ar.quora.com/%D9%85%D8%A7%D8%B0%D8%A7-%D9%8A%D8%B9%D9%86%D9%8A-%D9%84%D9%83-%D8%A7%D9%84%D8%A5%D8%AF%D9%85%D8%A7%D9%86');
+    // Capture screenshot or perform other actions after login
+    // await page.screenshot({ path: 'logged_in.png' });
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    // Close the browser
+    await page.click( "#mainContent > div.q-box.qu-borderAll.qu-borderRadius--small.qu-borderColor--raised.qu-boxShadow--small.qu-bg--raised > div > div.q-box.qu-zIndex--action_bar > div > div > div:nth-child(1) > button.q-click-wrapper.qu-active--textDecoration--none.qu-focus--textDecoration--none.qu-borderRadius--pill.qu-alignItems--center.qu-justifyContent--center.qu-whiteSpace--nowrap.qu-userSelect--none.qu-display--inline-flex.qu-tapHighlight--white.qu-textAlign--center.qu-cursor--pointer.qu-hover--textDecoration--none.qu-hover--bg--darken.ClickWrapper___StyledClickWrapperBox-zoqi4f-0.iyYUZT.base___StyledClickWrapper-lx6eke-1.fJHGyh");
+
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    await page.type( '#root > div > div:nth-child(2) > div > div > div > div > div.q-flex.ModalContainerInternal___StyledFlex-s8es4q-2.gXhqYs.modal_content_inner.qu-flexDirection--column.qu-bg--white.qu-overflowY--auto.qu-borderAll.qu-alignSelf--center > div > div.q-flex.qu-flexDirection--column.qu-overflowY--auto > div.q-relative.qu-display--flex.qu-flexDirection--column > div > div.q-box > div:nth-child(2) > div > div > div > div > div.q-box > div'
+, 'SAAAAAAAAAAAADEDDDD');
+
+})();
+

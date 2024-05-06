@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <title>URL Scrap</title>
 </head>
 <body>
@@ -11,37 +12,64 @@
         <input type="text" placeholder="Type URL ..." name="myurl">
         <input type="submit" value="Send">
         <h1>Title: <%= title %></h1>
-        <h2>Response from OpenAI: <%= messagegpt %></h2>
+        <h2>Response from OpenAI: </h2>
+        <p id="myText"> <%= messagegpt %></p>
 
         <!-- Button to copy the response to clipboard -->
-        <button id="copyButton">Copy Response</button>
-        <span id="copyMessage"></span>
+       
     </form>
+    <button class="btn" onclick="copyContent()">Copy!</button>
 
     <hr>
 
     <!-- Form for modifying the response -->
+    <h1>Modify response of OPENAI</h1>
     <form action="/modify-response" method="POST">
         <input type="text" placeholder="Modify Response ..." name="modifiedResponse">
         <input type="submit" value="Submit">
     </form>
 
+    <hr>
+
+    <h1>
+        STYLE TEXT FOR UPLOADING
+    </h1>
+
+    <textarea name="ckeditor"></textarea>
+    <button class="btn" onclick="copyCKEditorContent()">Copy!</button>
+    <input type="submit">
+    
     <script>
-        document.getElementById('copyButton').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            const encodedText = encodeURIComponent('<%= messagegpt %>');
-            const el = document.createElement('textarea');
-            el.value = encodedText;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            document.getElementById('copyMessage').innerText = 'Response copied to clipboard!';
-        });
+ let text = document.getElementById('myText').innerHTML;
+        const copyContent = async () => {
+          try {
+            await navigator.clipboard.writeText(text);
+            console.log('Content copied to clipboard');
+          } catch (err) {
+            console.error('Failed to copy: ', err);
+          }
+        }
+
+
+      const copyCKEditorContent = () => {
+          const editorInstance = CKEDITOR.instances.ckeditor;
+          if (editorInstance) {
+              const editorText = editorInstance.getData();
+              try {
+                  navigator.clipboard.writeText(editorText);
+                  console.log('CKEditor content copied to clipboard');
+              } catch (err) {
+                  console.error('Failed to copy CKEditor content: ', err);
+              }
+          } else {
+              console.error('CKEditor instance not found.');
+          }
+      }
+  </script>
+  
+
+    <script>
+      CKEDITOR.replace( 'ckeditor' );
     </script>
 </body>
 </html>
-
-
-
-One%20absurd%20math%20problem%20that%20comes%20to%20mind%20is%20the%20%26%2334%3BMonty%20Hall%20problem%2C%26%2334%3B%20which%20is%20a%20probability%20puzzle%20based%20on%20a%20game%20show%20scenario.%20In%20the%20problem%2C%20a%20contestant%20is%20asked%20to%20choose%20one%20of%20three%20doors%2C%20behind%20one%20of%20which%20is%20a%20prize.%20After%20the%20contestant%20makes%20their%20choice%2C%20the%20host%20(Monty%20Hall)%20opens%20one%20of%20the%20remaining%20doors%20to%20reveal%20that%20there%20is%20no%20prize%20behind%20it.%20The%20contestant%20is%20then%20given%20the%20option%20to%20switch%20their%20choice%20to%20the%20other%20unopened%20door%2C%20or%20stick%20with%20their%20original%20choice.%20The%20problem%20is%20that%20statistically%2C%20the%20contestant%20has%20a%20higher%20chance%20of%20winning%20if%20they%20switch%20their%20choice%2C%20which%20goes%20against%20common%20intuition.%20This%20paradox%20has%20baffled%20many%20people%20and%20sparked%20debates%20among%20mathematicians%20and%20statisticians.
