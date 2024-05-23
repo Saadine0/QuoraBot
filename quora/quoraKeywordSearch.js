@@ -1,11 +1,8 @@
 import puppeteer from "puppeteer-extra";
 import mysql from "mysql";
-import OpenAI from "openai";
 
 
-const openai = new OpenAI({
-  apiKey: " ",
-});
+
 
 const pool = mysql.createPool({
   connectionLimit: 10,
