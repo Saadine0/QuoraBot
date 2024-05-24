@@ -23,23 +23,7 @@ pool.getConnection((err, connection) => {
 
 
 const runPrompt = async (prompt) => {
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 512,
-      top_p: 1,
-      temperature: 0.5,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-    });
 
-    return response.choices[0].message.content;
-  } catch (error) {
-    console.error("Error:", error);
-    return "Error occurred";
-  }
-};
 
 
 let titles = "";
